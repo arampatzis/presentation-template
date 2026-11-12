@@ -1,0 +1,31 @@
+% A Fourier neural operator: a pointwise lifting, L Fourier layers, and a
+% pointwise projection; under each function, its domain and values.
+\documentclass[tikz,border=2pt]{standalone}
+\input{tikz-preamble}
+\begin{document}
+\begin{tikzpicture}[every node/.append style={font=\small}, node distance=4mm and 3.2mm,
+    fn/.style={statenode, minimum width=8mm},
+    pw/.style={opnode, minimum width=8mm, minimum height=7mm},
+    mix/.style={layernode, fill=nodeGate, minimum width=8mm, minimum height=7mm},
+    ch/.style={font=\scriptsize, text=black!60, below=1mm}]
+  \node[inputnode, minimum width=10mm] (u) {$u$};
+  \node[pw, right=of u]   (P)  {$\mathcal P$};
+  \node[fn, right=of P]   (v0) {$\bm v_0$};
+  \node[mix, right=of v0] (K1) {$\mathcal K_1$};
+  \node[right=of K1]      (dd) {$\cdots$};
+  \node[mix, right=of dd] (KL) {$\mathcal K_L$};
+  \node[fn, right=of KL]  (vL) {$\bm v_L$};
+  \node[pw, right=of vL]  (Q)  {$\mathcal Q$};
+  \node[outputnode, right=of Q, minimum width=10mm] (out) {$\hat G(u)$};
+  \foreach \a/\b in {u/P, P/v0, v0/K1, K1/dd, dd/KL, KL/vL, vL/Q, Q/out}
+    \draw[edge] (\a) -- (\b);
+  \node[ch] at (u.south)   {$(-1,1)\to\Real$};
+  \node[ch] at (v0.south)  {$(-1,1)\to\Real^{n_c}$};
+  \node[ch] at (vL.south)  {$(-1,1)\to\Real^{n_c}$};
+  \node[ch] at (out.south) {$(-1,1)\to\Real$};
+  % what each part does
+  \node[font=\footnotesize, anchor=base] at ($(P.north)+(0,2.5mm)$) {at each $x$};
+  \node[font=\footnotesize, anchor=base] at ($(Q.north)+(0,2.5mm)$) {at each $x$};
+  \node[font=\footnotesize, anchor=base] at ($(K1.north)!0.5!(KL.north)+(0,2.5mm)$) {mix all points};
+\end{tikzpicture}
+\end{document}

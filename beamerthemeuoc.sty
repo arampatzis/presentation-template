@@ -1,0 +1,173 @@
+% Presentation theme: Metropolis restyled in navy and teal, with the
+% University of Crete and IACM-FORTH logos.
+%
+% Format: set by the class option, not by the theme.
+%   \documentclass[aspectratio=169, 10pt]{beamer}   % wide (16:9)
+%   \documentclass[aspectratio=43,  10pt]{beamer}   % standard (4:3)
+% All lengths below are absolute or relative to \textwidth, so both formats work unchanged.
+%
+% Theme options:
+%   nofooterlogos   no logos at the bottom of the content slides
+%
+% Compile with LuaLaTeX (the fonts are OpenType).
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{beamerthemeuoc}
+
+\newif\ifuoc@footerlogos
+\uoc@footerlogostrue
+\DeclareOptionBeamer{nofooterlogos}{\uoc@footerlogosfalse}
+\ProcessOptionsBeamer
+
+\usetheme[progressbar=frametitle, numbering=fraction, block=fill, sectionpage=progressbar]{metropolis}
+
+% ---------- Layout ----------
+% Content starts at the top of every slide (same as the class option t)
+\beamer@centeredfalse
+% Thinner frame title bar (Metropolis default 2.2ex)
+\setlength{\metropolis@frametitle@padding}{1.4ex}
+% Thicker progress bars (Metropolis default 0.4pt)
+\setlength{\metropolis@progressinheadfoot@linewidth}{1.2pt}
+\setlength{\metropolis@progressonsectionpage@linewidth}{1.2pt}
+\setlength{\metropolis@titleseparator@linewidth}{1.2pt}
+
+% Section page: large two-digit section number above the title
+\setbeamertemplate{section page}{%
+  \centering
+  \begin{minipage}{22em}
+    \raggedright
+    {\color{teal}\fontsize{36}{36}\selectfont\bfseries
+      \ifnum\value{section}<10 0\fi\arabic{section}}\par
+    \vspace{1.5ex}
+    \usebeamercolor[fg]{section title}%
+    \usebeamerfont{section title}%
+    \insertsectionhead\\[-1ex]
+    \usebeamertemplate*{progress bar in section page}
+    \par
+  \end{minipage}
+  \par
+  \vspace{\baselineskip}}
+
+% ---------- Fonts ----------
+% KpRoman text + KpMath, the fonts of the lecture notes and their figures.
+\usepackage{amsmath}
+\usepackage{kpfonts-otf}
+\usefonttheme{serif}
+\usefonttheme{professionalfonts}
+
+% ---------- Colors ----------
+\definecolor{navy}{HTML}{1F2D4D}
+\definecolor{teal}{HTML}{12877F}
+\definecolor{teallight}{HTML}{D3ECEA}
+\definecolor{accent}{HTML}{E07A1F}
+\definecolor{softgray}{HTML}{8A93A6}
+\definecolor{paper}{HTML}{FFFFFF}
+
+\setbeamercolor{normal text}{fg=navy, bg=paper}
+\setbeamercolor{frametitle}{fg=white, bg=navy}
+\setbeamercolor{progress bar}{fg=teal, bg=navy!70}
+\setbeamercolor{progress bar in head/foot}{fg=teal, bg=navy!70}
+\setbeamercolor{progress bar in section page}{fg=teal, bg=teallight}
+\setbeamercolor{title separator}{fg=teal}
+\setbeamercolor{alerted text}{fg=accent}
+\setbeamercolor{example text}{fg=teal}
+\setbeamercolor{footline}{fg=softgray}
+\setbeamercolor{page number in head/foot}{fg=softgray}
+\setbeamercolor{block title}{fg=white, bg=teal}
+\setbeamercolor{block body}{fg=navy, bg=teallight!50}
+\setbeamercolor{block title alerted}{fg=white, bg=accent}
+\setbeamercolor{block body alerted}{fg=navy, bg=accent!10}
+\setbeamercolor{standout}{fg=white, bg=navy}
+\setbeamercolor{itemize item}{fg=teal}
+\setbeamercolor{itemize subitem}{fg=teal}
+\setbeamercolor{enumerate item}{fg=teal}
+
+\setbeamertemplate{itemize item}{\small\raisebox{0.1ex}{$\blacktriangleright$}}
+\setbeamertemplate{itemize subitem}{\footnotesize\textendash}
+\setbeamerfont{frametitle}{series=\bfseries, size=\large}
+\setbeamerfont{title}{series=\bfseries, size=\LARGE}
+\setbeamerfont{subtitle}{size=\large}
+\setbeamerfont{institute}{size=\footnotesize}
+% Space between list items (slides and notes)
+\addtobeamertemplate{itemize/enumerate body begin}{}{\setlength{\itemsep}{0.8ex}}
+\addtobeamertemplate{itemize/enumerate subbody begin}{}{\setlength{\itemsep}{0.4ex}}
+
+% ---------- Logos ----------
+% Files in logos/, found through TEXINPUTS or the TEXMF tree (see README).
+\newcommand{\uoclogo}[1]{\includegraphics[height=#1]{uocbeamer-uoc-horizontal}}
+\newcommand{\uocseal}[1]{\includegraphics[height=#1]{uocbeamer-uoc-seal}}
+\newcommand{\forthlogo}[1]{\includegraphics[height=#1]{uocbeamer-forth}}
+
+% Title page: Metropolis layout, with both logos along the bottom
+\setbeamertemplate{title page}{%
+  \begin{minipage}[b][\dimexpr\paperheight-1em\relax]{\textwidth}
+    \vfill
+    \ifx\inserttitle\@empty\else\usebeamertemplate*{title}\fi
+    \ifx\insertsubtitle\@empty\else\usebeamertemplate*{subtitle}\fi
+    \usebeamertemplate*{title separator}
+    \ifx\beamer@shortauthor\@empty\else\usebeamertemplate*{author}\fi
+    \ifx\insertinstitute\@empty\else\usebeamertemplate*{institute}\fi
+    \ifx\insertdate\@empty\else\usebeamertemplate*{date}\fi
+    \vfill
+    \uoclogo{11mm}\hfill\forthlogo{10mm}\par
+    \vspace*{6mm}
+  \end{minipage}}
+\setbeamertemplate{title}{\raggedright\linespread{1.0}\inserttitle\par\vspace*{0.6em}}
+\setbeamertemplate{subtitle}{%
+  \raggedright{\color{teal}\insertsubtitle}\par\vspace*{0.6em}}
+\setbeamertemplate{author}{\vspace*{1.5em}{\bfseries\insertauthor}\par\vspace*{0.25em}}
+\setbeamertemplate{institute}{%
+  {\usebeamerfont{institute}\color{softgray}\insertinstitute}\par\vspace*{1em}}
+\setbeamertemplate{date}{\insertdate\par}
+
+% Content slides: small logos at the bottom left, page number at the bottom right.
+% Standout frames (navy background) show no logos.
+\ifuoc@footerlogos
+  \setbeamertemplate{frame footer}{%
+    \ifbool{metropolis@standout}{}{%
+      \raisebox{-0.3\height}{\uocseal{4.2mm}}\hspace{1.5mm}%
+      \raisebox{-0.3\height}{\forthlogo{3.6mm}}}}
+\fi
+
+% ---------- Figures ----------
+% \includegraphics[max width=\textwidth]{...}: natural size when the figure fits,
+% shrunk to the text width otherwise (useful when a talk switches to 4:3)
+\usepackage[export]{adjustbox}
+
+% ---------- Tables ----------
+\usepackage{booktabs}
+\usepackage{colortbl}
+\renewcommand{\arraystretch}{1.15}
+
+% ---------- Helpers ----------
+\usepackage{tikz}
+% Key term: teal and bold
+\newcommand{\term}[1]{\textcolor{teal}{\textbf{#1}}}
+% Data set / variable names
+\newcommand{\var}[1]{\textcolor{teal}{\texttt{#1}}}
+% Figure source line under a figure
+\newcommand{\source}[1]{\par\vspace{0.3ex}{\scriptsize\color{softgray}#1\par}}
+% Supporting calculation under a bullet: smaller and in a muted blue
+\definecolor{calc}{HTML}{56668A}
+\newcommand{\calc}[1]{{\footnotesize\color{calc}#1\par}}
+% Highlighted table row
+\newcommand{\hlrow}{\rowcolor{accent!12}}
+
+% ---------- Presenter notes ----------
+% Notes page: frame title + notes, used in the notes version of a talk.
+% \note[itemize]: same as beamer's, but with space between the items
+\define@key{beamernotes}{itemize}[true]{%
+  \def\beamer@noteenvstart{\begin{itemize}\itemsep=1.8ex\parskip=0pt}%
+  \def\beamer@noteenvend{\end{itemize}}}
+\setbeamerfont{note page}{size=\small}
+% Note helper: transition to the next slide
+\newcommand{\nextslide}{\textcolor{teal}{\textbf{Next:}}\ }
+\setbeamertemplate{note page}{%
+  \vspace*{3ex}%
+  % The block ends at 0.93\paperwidth, slightly past beamer's right margin:
+  % a full-width box keeps that layout without an overfull \hbox warning.
+  \noindent\makebox[\textwidth][l]{%
+    \hspace*{\dimexpr0.07\paperwidth-\beamer@leftmargin\relax}%
+    \begin{minipage}[t]{0.86\paperwidth}
+      {\color{teal}\bfseries\insertshortframetitle}\par\vspace{1.5ex}
+      \insertnote
+    \end{minipage}}}

@@ -1,0 +1,21 @@
+% Reverse mode on the graph of f(x1, x2) = sin(x1 x2) + x2^3: each node holds its adjoint, edges point in the direction of the sweep.
+\documentclass[tikz,border=1pt]{standalone}
+\input{tikz-preamble}
+\begin{document}
+\begin{tikzpicture}
+  \matrix[row sep=7mm, column sep=11mm] {
+    \node[inputnode] (v1) {$\bar v_1 = v_2\,\bar v_3$}; &
+    \node[opnode]    (v3) {$\bar v_3 = (\cos v_3)\,\bar v_5$}; &
+    \node[opnode]    (v5) {$\bar v_5 = \bar v_6$}; \\
+    \node[inputnode] (v2) {$\bar v_2 = v_1\,\bar v_3 + 3v_2^2\,\bar v_4$}; &
+    \node[opnode]    (v4) {$\bar v_4 = \bar v_6$}; &
+    \node[outputnode](v6) {$\bar v_6 = \bar f$}; \\
+  };
+  \draw[edge] (v3) -- (v1);
+  \draw[edge] (v3) -- (v2);
+  \draw[edge] (v4) -- (v2);
+  \draw[edge] (v5) -- (v3);
+  \draw[edge] (v6) -- (v4);
+  \draw[edge] (v6) -- (v5);
+\end{tikzpicture}
+\end{document}

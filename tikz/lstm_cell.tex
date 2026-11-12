@@ -1,0 +1,43 @@
+% One LSTM cell. The cell state runs straight across the top.
+\documentclass[tikz,border=2pt]{standalone}
+\input{tikz-preamble}
+\begin{document}
+\begin{tikzpicture}[x=1cm, y=1cm, edge/.append style={-{Stealth[length=2.4mm]}}]
+  % the cell state, straight across the top
+  \node[statenode] (cprev) at (0,2.3) {$\bm c_{t-1}$};
+  \node[opcircle]  (mulf)  at (2.4,2.3) {$\odot$};
+  \node[opcircle]  (addc)  at (4.5,2.3) {$+$};
+  \node[statenode] (cnext) at (9.7,2.3) {$\bm c_{t}$};
+  \draw[edge] (cprev) -- (mulf);
+  \draw[edge] (mulf) -- (addc);
+  \draw[edge] (addc) -- (cnext);
+
+  % gates and candidate
+  \node[gatenode] (f)  at (2.4,0.7) {$\bm f_t$};
+  \node[gatenode] (i)  at (3.7,0.7) {$\bm i_t$};
+  \node[gatenode] (ct) at (5.4,0.7) {$\tilde{\bm c}_t$};
+  \node[gatenode] (o)  at (6.9,0.7) {$\bm o_t$};
+  \node[opcircle] (muli) at (4.5,1.5) {$\odot$};
+  \node[gatenode] (th)   at (8.3,1.5) {$\tanh$};
+  \node[opcircle] (mulo) at (8.3,0.1) {$\odot$};
+
+  \draw[edge] (f) -- (mulf);
+  \draw[edge] (i) -- (muli);
+  \draw[edge] (ct) -- (muli);
+  \draw[edge] (muli) -- (addc);
+  \draw[edge] (8.3,2.3) -- (th);
+  \fill (8.3,2.3) circle (1.2pt);
+  \draw[edge] (th) -- (mulo);
+  \draw[edge] (o) -- (mulo);
+
+  % what the gates are computed from
+  \node[statenode] (hprev) at (0,-0.9) {$\bm h_{t-1}$};
+  \node[elabel] (x) at (1.2,-2.0) {$\bm x_t$};
+  \node[statenode] (hnext) at (9.7,-0.9) {$\bm h_{t}$};
+  \draw[semithick] (hprev) -- (6.9,-0.9);
+  \draw[edge] (x) -- (1.2,-0.92);
+  \node[elabel, below] at (4.0,-0.95) {$\bm v_t=(\bm h_{t-1},\bm x_t)$};
+  \foreach \n in {f,i,ct,o}{\draw[edge] (\n|-hprev) -- (\n);}
+  \draw[edge] (mulo) |- (hnext);
+\end{tikzpicture}
+\end{document}

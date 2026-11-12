@@ -1,0 +1,23 @@
+% The two networks of a DeepONet: the branch reads the input
+% function at the sensors, the trunk reads the point x, and the output is the
+% sum of the products of their outputs.
+\documentclass[tikz,border=2pt]{standalone}
+\input{tikz-preamble}
+\begin{document}
+\begin{tikzpicture}[every node/.append style={font=\small}, node distance=6mm and 7mm]
+  \node[inputnode, minimum width=30mm] (u) {$u(x^{\mathrm s}_1),u(x^{\mathrm s}_2),\dots$};
+  \node[opnode, right=of u, minimum width=22mm] (br) {branch $\bm\beta(\cdot\,;\W_\beta)$};
+  \node[statenode, right=of br, minimum width=22mm] (be) {$\bm\beta(\bm u_{\mathrm s})\in\Real^{n_\tau}$};
+  \node[inputnode, below=10mm of u, minimum width=30mm] (x) {point $x$};
+  \node[opnode, right=of x, minimum width=22mm] (tr) {trunk $\bm\tau(\cdot\,;\W_\tau)$};
+  \node[statenode, right=of tr, minimum width=22mm] (ta) {$\bm\tau(x)\in\Real^{n_\tau}$};
+  \node[outputnode, right=28mm of $(be)!0.5!(ta)$, align=center]
+    (out) {$\displaystyle\sum_{k=1}^{n_\tau}\beta_k(\bm u_{\mathrm s})\,\tau_k(x) + b_0$\\[2pt]$=\hat G(u;\W)(x)$};
+  \draw[edge] (u) -- (br);
+  \draw[edge] (br) -- (be);
+  \draw[edge] (x) -- (tr);
+  \draw[edge] (tr) -- (ta);
+  \draw[edge] (be.east) -- (out);
+  \draw[edge] (ta.east) -- (out);
+\end{tikzpicture}
+\end{document}
